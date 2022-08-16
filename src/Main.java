@@ -4,14 +4,24 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        String[] products = {"Молоко", "Хлеб", "Гречневая крупа"};
-        int[] prices = {50, 14, 80};
+        String[] products = {"Молоко", "Хлеб", "Гречневая крупа", "Сыр", "Бекон"};
+        int[] prices = {50, 14, 80, 35, 155};
         int foodBasket[] = new int[products.length];
+        int sumNumb[] = new int[products.length];
+        String[] sale3for2 = {null, null, "Гречневая крупа", null, "Бекон"};
+
 
         System.out.println("Список возможных товаров для покупки:");
         for (int i = 0; i < products.length; i++) {
             System.out.println((i + 1) + " " + products[i] +
                     " " + prices[i] + " руб/шт");
+        }
+        System.out.println("*****");
+        System.out.println("Товары по акции  \"3 по цене 2х\": ");
+        for (int i = 0; i < products.length; i++) {
+            if (sale3for2[i] != null) {
+                System.out.println(sale3for2[i]);
+            }
         }
 
 
@@ -52,18 +62,29 @@ public class Main {
             }
 
             foodBasket[productNumber] += productCount;
-            sumProducts += prices[productNumber] * foodBasket[productNumber];
         }
 
         System.out.println("Ваша корзина:");
         for (int i = 0; i < products.length; i++) {
-            if (foodBasket[i] > 0) {
-                int sumNumb = foodBasket[i] * prices[i];
-                System.out.println(products[i] + " " + foodBasket[i] + " шт " +
-                        prices[i] + " руб/шт " + sumNumb + " в сумме");
 
+            if (foodBasket[i] >= 3 && sale3for2[i] != null) {
+                int goodsSale = foodBasket[i] / 3;
+                sumNumb[i] = (foodBasket[i] - goodsSale) * prices[i];
+            } else if (foodBasket[i] > 0) {
+                sumNumb[i] = foodBasket[i] * prices[i];
+            }
+            sumProducts += sumNumb[i];
+        }
+        for (int i = 0; i < products.length; i++) {
+            if (foodBasket[i] > 0 && sale3for2[i] != null) {
+                System.out.println("Цена по акции: ");
+            }
+            if (foodBasket[i] > 0) {
+                System.out.println(products[i] + " " + foodBasket[i] + " шт " +
+                        prices[i] + " руб/шт " + sumNumb[i] + " в сумме");
             }
         }
+
         System.out.println("Итого: " + sumProducts + " руб");
     }
 }
