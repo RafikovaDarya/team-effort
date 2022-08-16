@@ -1,3 +1,5 @@
+package src;
+
 import java.util.Scanner;
 
 public class Main {
@@ -56,17 +58,21 @@ public class Main {
                 System.out.println("Некорректно введен номер продукта");
                 continue;
             }
-            if (productCount < 0) {
+
+            if (productCount < 0 && foodBasket[productNumber] < Math.abs(productCount)) {
                 System.out.println("Некорректно введено количество продукта");
                 continue;
+            } else if (productCount == 0) {
+                foodBasket[productNumber] = 0;
+                System.out.println("Товар удален из корзины");
+            } else {
+                foodBasket[productNumber] += productCount;
             }
 
-            foodBasket[productNumber] += productCount;
         }
 
         System.out.println("Ваша корзина:");
         for (int i = 0; i < products.length; i++) {
-
             if (foodBasket[i] >= 3 && sale3for2[i] != null) {
                 int goodsSale = foodBasket[i] / 3;
                 sumNumb[i] = (foodBasket[i] - goodsSale) * prices[i];
